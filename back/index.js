@@ -20,6 +20,23 @@ app.get("/status", async (req, res) => {
   console.log(json);
 });
 
+app.get("/tool/internet", async (req, res) => {
+  const m_res = await fetch(`http://${m_host}/rest/ping`, {
+    method: "POST",
+    body: JSON.stringify({
+      address: "google.com",
+      count: 1,
+    }),
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+    },
+  });
+  const json = await m_res.json();
+  res.json(json);
+  console.log(json);
+});
+
 app.listen(3000, () => {
   console.log("aplikacja dziala na porcie 3000");
 });
