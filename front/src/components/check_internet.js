@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 
 export default function Check_internet() {
   const [internet, setInternet] = useState(true);
+  const [color, setColor] = useState("");
 
   const check = async () => {
     try {
@@ -10,23 +11,21 @@ export default function Check_internet() {
       const json = await res.json();
       if (json[0].status == "timeout") {
         setInternet(false);
-      } else setInternet(true);
+        setColor("error");
+      } else {
+        setInternet(true);
+        setColor("success");
+      }
 
       console.log(json);
     } catch (error) {
       setInternet(false);
     }
   };
-  useEffect(() => {
-    check();
-  }, []);
+
   return (
     <div>
-      <Button
-        color={internet ? "success" : "error"}
-        onClick={check}
-        variant="contained"
-      >
+      <Button color={color} onClick={check} variant="contained">
         Sprawdź internet
       </Button>
     </div>
