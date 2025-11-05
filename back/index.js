@@ -20,12 +20,12 @@ app.get("/status", async (req, res) => {
   console.log(json);
 });
 
-app.get("/tool/internet/:serwis", async (req, res) => {
+app.get("/tool/internet/:serwis/:pakiety", async (req, res) => {
   const m_res = await fetch(`http://${m_host}/rest/ping`, {
     method: "POST",
     body: JSON.stringify({
       address: req.params.serwis,
-      count: 1,
+      count: req.params.pakiety,
     }),
     headers: {
       "Content-type": "application/json",

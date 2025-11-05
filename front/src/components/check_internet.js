@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Toggle_Button from "./toggle_button";
+import Slider from "@mui/material/Slider";
+import Box from "@mui/material/Box";
 
 export default function Check_internet() {
   const [alignment, setAlignment] = useState("google.com");
   const [internet, setInternet] = useState(true);
   const [color, setColor] = useState("");
+  const [packages, setPackages] = useState(1);
 
   const check = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/tool/internet/${alignment}`
+        `http://localhost:3000/tool/internet/${alignment}/${packages}`
       );
       const json = await res.json();
       if (json[0].status == "timeout") {
@@ -37,6 +40,15 @@ export default function Check_internet() {
       <Button color={color} onClick={check} variant="contained">
         Sprawdź internet
       </Button>
+      <Box sx={{ width: 300 }}>
+        <Slider
+          defaultValue={1}
+          max={4}
+          aria-label="Default"
+          valueLabelDisplay="auto"
+          onChange={(e) => setPackages(e.target.value)}
+        />
+      </Box>
     </div>
   );
 }
