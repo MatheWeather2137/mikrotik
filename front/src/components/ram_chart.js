@@ -2,8 +2,8 @@ import React from "react";
 
 import { LineChart } from "@mui/x-charts/LineChart";
 
-export default function Proc_Chart({ cpuData }) {
-  const xAxisData = cpuData.map((_, i) => i + 1);
+export default function Ram_Chart({ ramData }) {
+  const xAxisData = ramData.map((_, i) => i + 1);
 
   return (
     <LineChart
@@ -11,7 +11,7 @@ export default function Proc_Chart({ cpuData }) {
       xAxis={[{ data: xAxisData }]}
       series={[
         {
-          data: cpuData,
+          data: ramData,
         },
       ]}
       height={300}
