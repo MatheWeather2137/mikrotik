@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 import ToggleButton from "@mui/material/ToggleButton";
 
 export default function Firewalls() {
@@ -67,7 +68,7 @@ export default function Firewalls() {
         selected={selectedId === record[".id"]}
         onChange={() => handleToggle(record)}
       >
-        <CheckIcon />
+        {record.disabled === "false" ? <CheckIcon /> : <CloseIcon />}
       </ToggleButton>
     ),
     action: record["action"],
@@ -83,7 +84,7 @@ export default function Firewalls() {
 
   const handleToggle = async (record) => {
     const id = record[".id"];
-    const currentAction = record.action;
+    const currentDisabled = record.disabled;
 
     setSelectedId((prev) => (prev === id ? null : id));
 
@@ -95,17 +96,17 @@ export default function Firewalls() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ currentAction }),
+          body: JSON.stringify({ currentDisabled }),
         }
       );
 
-      const updated = await res.json();
+      await res.json();
       setFirewalls((prev) =>
         prev.map((item) =>
           item[".id"] === id
             ? {
                 ...item,
-                action: currentAction === "accept" ? "drop" : "accept",
+                disabled: currentDisabled === "true" ? "false" : "true",
               }
             : item
         )

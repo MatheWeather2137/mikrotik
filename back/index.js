@@ -46,9 +46,9 @@ app.get("/tool/firewall", async (req, res) => {
 });
 app.get("/tool/firewall/toggle/:id", async (req, res) => {
   const { id } = req.params;
-  const { currentAction } = req.body;
+  const { currentDisabled } = req.body;
 
-  const newAction = currentAction === "accept" ? "drop" : "accept";
+  const newDisabled = currentDisabled === "true" ? "false" : "true";
 
   const m_res = await fetch(`http://${m_host}/rest/ip/firewall/filter/${id}`, {
     method: "PATCH",
@@ -56,7 +56,9 @@ app.get("/tool/firewall/toggle/:id", async (req, res) => {
       "Content-Type": "application/json",
       Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
     },
-    body: JSON.stringify({ action: "newAction" }),
+    body: JSON.stringify({
+      disabled: newDisabled,
+    }),
   });
 
   const json = await m_res.json();
