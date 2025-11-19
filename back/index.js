@@ -17,7 +17,6 @@ app.get("/status", async (req, res) => {
   });
   const json = await m_res.json();
   res.json(json);
-  console.log(json);
 });
 
 app.get("/tool/internet/:serwis/:pakiety", async (req, res) => {
@@ -34,7 +33,34 @@ app.get("/tool/internet/:serwis/:pakiety", async (req, res) => {
   });
   const json = await m_res.json();
   res.json(json);
-  console.log(json);
+});
+
+app.get("/tool/firewall", async (req, res) => {
+  const m_res = await fetch(`http://${m_host}/rest/ip/firewall/filter`, {
+    headers: {
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+    },
+  });
+  const json = await m_res.json();
+  res.json(json);
+});
+app.get("/tool/firewall/toggle/:id", async (req, res) => {
+  const { id } = req.params;
+  const { currentAction } = req.body;
+
+  const newAction = currentAction === "accept" ? "drop" : "accept";
+
+  const m_res = await fetch(`http://${m_host}/rest/ip/firewall/filter/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+    },
+    body: JSON.stringify({ action: "newAction" }),
+  });
+
+  const json = await m_res.json();
+  res.json(json);
 });
 
 app.listen(3000, () => {

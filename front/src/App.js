@@ -7,6 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import React from "react";
 import Check_internet from "./components/check_internet";
+import Firewalls from "./components/firewalls";
 
 function App() {
   const [value, setValue] = React.useState("1");
@@ -29,11 +30,14 @@ function App() {
             <Check_internet />
           </TabPanel>
           <TabPanel value="2">
-            <M_status />
+            <Firewalls />
           </TabPanel>
           <TabPanel value="3">Item Three</TabPanel>
         </TabContext>
       </Box>
+      <div className="m_status">
+        <M_status />
+      </div>
     </div>
   );
 }
