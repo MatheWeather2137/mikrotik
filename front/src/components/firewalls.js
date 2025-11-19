@@ -100,7 +100,7 @@ export default function Firewalls() {
         }
       );
 
-      await res.json();
+      // await res.json();
       setFirewalls((prev) =>
         prev.map((item) =>
           item[".id"] === id

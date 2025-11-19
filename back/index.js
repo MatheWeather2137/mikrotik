@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 const m_host = "172.16.15.196";
 const m_user = "admin";
@@ -28,7 +29,7 @@ app.get("/tool/internet/:serwis/:pakiety", async (req, res) => {
     }),
     headers: {
       "Content-type": "application/json",
-      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx=`,
     },
   });
   const json = await m_res.json();
@@ -38,13 +39,14 @@ app.get("/tool/internet/:serwis/:pakiety", async (req, res) => {
 app.get("/tool/firewall", async (req, res) => {
   const m_res = await fetch(`http://${m_host}/rest/ip/firewall/filter`, {
     headers: {
-      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx=`,
     },
   });
   const json = await m_res.json();
   res.json(json);
 });
-app.get("/tool/firewall/toggle/:id", async (req, res) => {
+
+app.patch("/tool/firewall/toggle/:id", async (req, res) => {
   const { id } = req.params;
   const { currentDisabled } = req.body;
 
@@ -54,7 +56,7 @@ app.get("/tool/firewall/toggle/:id", async (req, res) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Basic YWRtaW46TWF0aTAwNjYx`,
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx=`,
     },
     body: JSON.stringify({
       disabled: newDisabled,
@@ -65,6 +67,7 @@ app.get("/tool/firewall/toggle/:id", async (req, res) => {
   res.json(json);
 });
 
+// ---- SERVER START ----
 app.listen(3000, () => {
   console.log("aplikacja dziala na porcie 3000");
 });
