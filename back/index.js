@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const m_host = "172.16.15.196";
+const m_host = "172.16.15.150";
 const m_user = "admin";
 const m_pass = "Mati00661";
 
@@ -67,7 +67,24 @@ app.patch("/tool/firewall/toggle/:id", async (req, res) => {
   res.json(json);
 });
 
-// ---- SERVER START ----
+app.get("/tool/traceroute", async (req, res) => {
+  const m_res = await fetch(`http://${m_host}/rest/tool/traceroute`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic YWRtaW46TWF0aTAwNjYx=`,
+    },
+    body: JSON.stringify({
+      address: "8.8.8.8",
+      count: "1",
+    }),
+  });
+
+  const json = await m_res.json();
+  res.json(json);
+  console.log(json);
+});
+
 app.listen(3000, () => {
   console.log("aplikacja dziala na porcie 3000");
 });
