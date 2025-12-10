@@ -21,6 +21,11 @@ const initialEdges = [
 export default function React_Flow() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
   const onNodesChange = useCallback(
     (changes) =>
@@ -36,38 +41,42 @@ export default function React_Flow() {
     (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
     []
   );
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/tool/traceroute");
-        const json = await res.json();
-        console.log(json);
-        const validNodes = json.filter(
-          (item) => item.address && item.address !== ""
-        );
-        const newNodes = validNodes.map((node, index) => ({
-          id: `node-${index}`,
-          position: { x: 100, y: index * 50 },
-          data: {
-            label: `${node.address}`,
-          },
-        }));
 
-        const newEdges = newNodes.slice(0, -1).map((node, index) => ({
-          id: `edge-${index}`,
-          source: node.id,
-          target: newNodes[index + 1].id,
-          animated: true,
-        }));
-        setEdges(newEdges);
-        setNodes(newNodes);
-      } catch (error) {}
-    };
-    getData();
-  }, []);
+  const getData = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/tool/traceroute/${inputValue}/1`
+      );
+      const json = await res.json();
+      console.log(json);
+      const validNodes = json.filter(
+        (item) => item.address && item.address !== ""
+      );
+      const newNodes = validNodes.map((node, index) => ({
+        id: `node-${index}`,
+        position: { x: index * 50, y: index * 50 },
+        data: {
+          label: `${node.address}`,
+        },
+      }));
+
+      const newEdges = newNodes.slice(0, -1).map((node, index) => ({
+        id: `edge-${index}`,
+        source: node.id,
+        target: newNodes[index + 1].id,
+        animated: true,
+      }));
+      setEdges(newEdges);
+      setNodes(newNodes);
+    } catch (error) {}
+  };
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
+      <div className="flow">
+        <input value={inputValue} onChange={handleChange} />
+        <button onClick={getData}>START</button>
+      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}

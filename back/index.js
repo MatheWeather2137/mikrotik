@@ -67,7 +67,7 @@ app.patch("/tool/firewall/toggle/:id", async (req, res) => {
   res.json(json);
 });
 
-app.get("/tool/traceroute", async (req, res) => {
+app.get("/tool/traceroute/:serwis/:count", async (req, res) => {
   const m_res = await fetch(`http://${m_host}/rest/tool/traceroute`, {
     method: "POST",
     headers: {
@@ -75,8 +75,8 @@ app.get("/tool/traceroute", async (req, res) => {
       Authorization: `Basic YWRtaW46TWF0aTAwNjYx=`,
     },
     body: JSON.stringify({
-      address: "8.8.8.8",
-      count: "1",
+      address: req.params.serwis,
+      count: req.params.count,
     }),
   });
 

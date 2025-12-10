@@ -56,3 +56,9 @@
   margin-bottom: 5px;
   margin-left: 5px;
 }
+.flow {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
